@@ -1,0 +1,50 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="certifi" />
+          <option value="charset-normalizer" />
+          <option value="filelock" />
+          <option value="fsspec" />
+          <option value="hf-xet" />
+          <option value="huggingface-hub" />
+          <option value="idna" />
+          <option value="Jinja2" />
+          <option value="joblib" />
+          <option value="MarkupSafe" />
+          <option value="mpmath" />
+          <option value="networkx" />
+          <option value="numpy" />
+          <option value="packaging" />
+          <option value="pandas" />
+          <option value="python-dateutil" />
+          <option value="pytz" />
+          <option value="PyYAML" />
+          <option value="regex" />
+          <option value="requests" />
+          <option value="safetensors" />
+          <option value="scikit-learn" />
+          <option value="scipy" />
+          <option value="setuptools" />
+          <option value="six" />
+          <option value="sympy" />
+          <option value="threadpoolctl" />
+          <option value="tokenizers" />
+          <option value="torch" />
+          <option value="tqdm" />
+          <option value="transformers" />
+          <option value="typing_extensions" />
+          <option value="tzdata" />
+          <option value="urllib3" />
+          <option value="wheel" />
+          <option value="langchain-anthropic" />
+          <option value="langchain-google-genai" />
+          <option value="google-generativeai" />
+          <option value="tavily-python" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
