@@ -1,2 +1,4 @@
 .env
 .idea
+tests/.env
+tests/*.pdf
