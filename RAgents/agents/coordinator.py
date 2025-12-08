@@ -63,6 +63,7 @@ class Coordinator:
         response = self.llm.generate(prompt).strip()
         return response
 
+    # 委托给计划者
     def delegate_to_planner(self, state: Dict[str, Any]) -> Dict[str, Any]:
         state['current_step'] = 'planning'
         return state
