@@ -2,7 +2,8 @@ import json
 from typing import Dict, List, Optional
 from RAgents.llms.base import BaseLLM
 from RAgents.prompts.loader import PromptLoader
-from RAgents.workflow.state import ResearchState, PlanStructure
+from RAgents.workflow.state import ResearchState, PlanStructure, SubTask
+
 
 class Planner:
     def __init__(self, llm: BaseLLM):
@@ -82,3 +83,65 @@ class Planner:
             pass
 
         return state
+
+    # 评估上下文的充分性
+    def evaluate_context_sufficiency(self, state: ResearchState) -> bool:
+        query = state['query']
+        plan = state['research_plan']
+        results = state['research_results']
+        iteration = state['iteration_count']
+        max_iterations = state['max_iterations']
+
+        # 当迭代次数满足要求时，已经有了足够的信息
+        if iteration >= max_iterations:
+            return True
+        # 当迭代次数不满足要求时，没有足够的信息
+        if not results:
+            return False
+        # 考虑到迭代次数和结果数量基本满足要求
+        if iteration >= 2 and len(results) >= 10:
+            return True
+
+        prompt = self.prompt_loader.load(
+            'planner_evaluate_context',
+            query=query,
+            research_goal=plan.get('research_goal', query),
+            completion_criteria=plan.get('completion_criteria', 'N/A'),
+            results_count=len(results),
+            current_iteration=iteration + 1,
+            max_iterations=max_iterations
+        )
+
+        response = self.llm.generate(prompt, temperature=0.3).strip().upper()
+        return response == "YES"
+
+    # 得到下一步任务
+    def get_next_task(self, state: ResearchState) -> Optional[SubTask]:
+        plan = state.get('research_plan')
+        if not plan:
+            return None
+
+        tasks = sorted(
+            plan.get('sub_tasks', []),
+            key=lambda t: (t.get('priority', 99), t.get('task_id', 0))
+        )
+        for task in tasks:
+            if task.get('status') == 'pending':
+                return task
+
+        return None
+
+    # 格式化当前计划进行展示
+    def format_plan_for_display(self, plan: PlanStructure) -> str:
+        output = []
+        output.append(f"研究目标: {plan.get('research_goal', 'N/A')}")
+        output.append(f"\n预计迭代次数: {plan.get('estimated_iterations', 'N/A')}")
+        output.append(f"\n完成标准: {plan.get('completion_criteria', 'N/A')}")
+        output.append("\n\n子任务列表:")
+        for task in plan.get('sub_tasks', []):
+            output.append(f"\n  {task['task_id']}. {task['description']}")
+            output.append(f"\n     Queries: {', '.join(task.get('search_queries', []))}")
+            output.append(f"\n     Sources: {', '.join(task.get('sources', []))}")
+            output.append(f"\n     Priority: {task.get('priority', 'N/A')}")
+            output.append(f"\n     Status: {task.get('status', 'pending')}")
+        return ''.join(output)
