@@ -62,3 +62,11 @@ class Coordinator:
         )
         response = self.llm.generate(prompt).strip()
         return response
+
+    def delegate_to_planner(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        state['current_step'] = 'planning'
+        return state
+
+    def __repr__(self) -> str:
+        """String representation."""
+        return f"Coordinator(llm={self.llm})"
