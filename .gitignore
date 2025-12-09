@@ -1,5 +1,4 @@
 .idea
 tests/.env
-tests/*.pdf
 .env
 .vscode
