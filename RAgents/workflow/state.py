@@ -44,6 +44,8 @@ class SubTask(TypedDict):
     priority: Optional[int]    # 优先级
 
 # 搜索结果
+# 每个步骤的研究结构都是这个search research
+# 最终得到的结果就是每个步骤中得到的结果的和
 class SearchResult(TypedDict):
     task_id: int  # 任务ID
     query: str    # 搜索查询
