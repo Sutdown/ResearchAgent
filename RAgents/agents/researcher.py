@@ -128,3 +128,49 @@ class Researcher:
                 if t.get('task_id') == task['task_id']:
                     t['status'] = 'completed'
                     break
+
+    def extract_relevant_info(self, state: ResearchState) -> str:
+        results = state.get('research_results', [])
+
+        if not results:
+            return "No research results available."
+
+        # 将结果转换为字典格式
+        all_items = []
+        for result in results:
+            for item in result.get('results', []):
+                all_items.append({
+                    'source': result.get('source'),
+                    'query': result.get('query'),
+                    'title': item.get('title'),
+                    'snippet': item.get('snippet'),
+                    'url': item.get('url')
+                })
+
+        prompt = self.prompt_loader.load(
+            'researcher_extract_info',
+            query=state['query'],
+            search_results=self._format_results_for_prompt(all_items[:10])  # Limit to top 10 results
+        )
+        summary = self.llm.generate(prompt, temperature=0.5)
+        return summary
+
+    def _format_results_for_prompt(self, items: List[Dict]) -> str:
+        formatted = []
+        for i, item in enumerate(items, 1):
+            formatted.append(f"\n{i}. [{item.get('source')}] {item.get('title', 'No title')}")
+            formatted.append(f"   URL: {item.get('url', 'N/A')}")
+            formatted.append(f"   {item.get('snippet', 'No snippet')[:200]}...")
+
+        return '\n'.join(formatted)
+
+    def __repr__(self) -> str:
+        """String representation."""
+        sources = []
+        if self.tavily:
+            sources.append('tavily')
+        if self.arxiv:
+            sources.append('arxiv')
+        if self.mcp:
+            sources.append('mcp')
+        return f"Researcher(sources={sources})"
