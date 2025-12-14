@@ -1,0 +1,31 @@
+# ResearchAgent 项目依赖
+
+# 核心依赖
+python-dotenv>=1.0.0
+rich>=13.0.0
+pydantic>=2.0.0
+
+# LLM相关
+openai>=1.0.0
+
+# 工作流和状态管理
+langgraph>=0.2.0
+langchain-core>=0.3.0
+
+# 模板引擎
+jinja2>=3.1.0
+
+# 搜索工具
+tavily-python>=0.3.0
+arxiv>=2.0.0
+httpx>=0.24.0
+
+# 向量存储
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# 文本处理
+python-Levenshtein>=0.21.0
+
+# LangSmith观测（可选）
+langsmith>=0.1.0

@@ -20,6 +20,7 @@ from RAgents.workflow.graph import ResearchWorkflow
 from func import parse_args, print_welcome, print_menu, console, show_models, CLIConfig, \
     configure_settings, print_separator, get_api_key_for_provider
 from RAgents.utils.logger import setup_logger
+from RAgents.langsmith.langsmith import setup_langsmith_tracing
 
 
 def human_approval_callback(state: Dict[str, Any]) -> tuple[bool, None] | tuple[bool, str]:
@@ -355,6 +356,10 @@ def interactive_mode(config: CLIConfig) -> int:
 def main(argv: Any = None) -> int:
     """主入口函数"""
     load_dotenv()
+    
+    # 初始化LangSmith追踪
+    setup_langsmith_tracing()
+    
     args = parse_args(argv if argv is not None else sys.argv[1:])
 
     # 检查 API 密钥

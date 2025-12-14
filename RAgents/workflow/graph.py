@@ -8,6 +8,7 @@ from RAgents.agents.rapporteur import Rapporteur
 from RAgents.agents.researcher import Researcher
 from RAgents.workflow.nodes import WorkflowNodes
 from RAgents.workflow.state import ResearchState
+from RAgents.langsmith.langsmith import get_tracer
 
 
 def create_research_graph(
@@ -79,10 +80,12 @@ class ResearchWorkflow:
         self.planner = planner
         self.researcher = researcher
         self.rapporteur = rapporteur
+        self.tracer = get_tracer()
         self.graph = create_research_graph(
             coordinator, planner, researcher, rapporteur, langsmith_config
         )
 
+    @get_tracer().trace_workflow("research_workflow")
     def stream_interactive(
             self,
             query: str,

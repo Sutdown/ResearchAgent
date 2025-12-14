@@ -2,13 +2,16 @@ from typing import Dict, Any
 
 from RAgents.llms.base import BaseLLM
 from RAgents.prompts.loader import PromptLoader
+from RAgents.langsmith.langsmith import get_tracer
 
 
 class Coordinator:
     def __init__(self, llm: BaseLLM):
         self.llm = llm
         self.prompt_loader = PromptLoader()
+        self.tracer = get_tracer()
 
+    @get_tracer().trace_agent("coordinator", "initialize_research")
     def initialize_research(self, user_query: str, auto_approve: bool = False, output_format: str = "markdown") -> Dict[str, Any]:
         query_type = self._classify_query(user_query)
         state = {
