@@ -1,4 +1,12 @@
-.idea
-tests/.env
+# Python
+__pycache__/
+*.pyc
+
+# Env
 .env
-.vscode
+*.env
+
+# IDE
+.idea/
+.vscode/
+
