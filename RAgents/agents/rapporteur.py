@@ -308,4 +308,44 @@ class Rapporteur:
                 citation_num += 1
         return '\n'.join(citations[:50])
 
+    def save_report(self, report: str, filepath: str) -> bool:
+        try:
+            if not report or len(report.strip()) < 100:
+                print("Warning: Report content is too short or empty, not saving")
+                return False
 
+            import os
+            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+            temp_path = filepath + '.tmp'
+            with open(temp_path, 'w', encoding='utf-8') as f:
+                f.write(report)
+
+            with open(temp_path, 'r', encoding='utf-8') as f:
+                written_content = f.read()
+                if written_content != report:
+                    print("Error: File content verification failed")
+                    os.remove(temp_path)
+                    return False
+
+            import shutil
+            shutil.move(temp_path, filepath)
+
+            file_size = os.path.getsize(filepath)
+            if file_size < 100:  # Basic sanity check
+                print(f"Error: Saved file is suspiciously small ({file_size} bytes)")
+                os.remove(filepath)
+                return False
+            return True
+        except Exception as e:
+            print(f"Error saving report: {e}")
+            try:
+                if os.path.exists(filepath + '.tmp'):
+                    os.remove(filepath + '.tmp')
+            except:
+                pass
+            return False
+
+    def __repr__(self) -> str:
+        """String representation."""
+        return f"Rapporteur(llm={self.llm})"
