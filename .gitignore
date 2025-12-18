@@ -11,3 +11,8 @@ RAgents/langsmith/.env
 .idea/
 .vscode/
 
+vector_memory/
+
+certificate.pem
+
+
