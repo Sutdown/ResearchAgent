@@ -61,6 +61,8 @@ ResearchAgent/
 
 ## 快速开始
 
+### 方式一：命令行界面（传统）
+
 1. 克隆项目到本地
 2. 安装依赖包：
    ```bash
@@ -71,14 +73,74 @@ ResearchAgent/
    python main.py
    ```
 
+### 方式二：Web 界面（推荐）
+
+1. 安装 Python 和 Node.js 依赖：
+   ```bash
+   # Python 依赖
+   pip install -r requirements.txt
+   pip install fastapi uvicorn python-multipart
+
+   # 进入前端目录
+   cd frontend
+   
+   # Node.js 依赖
+   npm install
+   ```
+
+2. 配置环境变量（在项目根目录创建 `.env` 文件）：
+   ```env
+   # LLM API 密钥（至少配置一个）
+   API_KEY=your_api_key_here
+   DEEPSEEK_API_KEY=your_deepseek_key_here
+   OPENAI_API_KEY=your_openai_key_here
+   ANTHROPIC_API_KEY=your_claude_key_here
+   
+   # 搜索 API（可选）
+   TAVILY_API_KEY=your_tavily_key_here
+   ```
+
+3. 启动 Web 服务：
+   ```bash
+   # Windows 用户
+   cd frontend && start.bat
+   
+   # Linux/macOS 用户  
+   cd frontend && chmod +x start.sh && ./start.sh
+   ```
+
+4. 访问界面：http://localhost:5173
+
+详细 Web 界面安装说明请参考：[WEB_SETUP.md](WEB_SETUP.md)
+
 ## 使用说明
 
-1. 启动程序后，输入研究主题或任务
-2. 系统会自动分解任务并分配给相应的代理
-3. 各代理协同工作完成研究任务
-4. 最终生成的报告会保存在 `outputs/` 目录中
+### 命令行界面
+1. 启动程序后，选择功能菜单
+2. 输入研究主题或任务
+3. 系统会自动分解任务并分配给相应的代理
+4. 各代理协同工作完成研究任务
+5. 最终生成的报告会保存在 `outputs/` 目录中
+
+### Web 界面
+1. 在浏览器中打开 http://localhost:5173
+2. 使用图形化界面进行研究任务管理
+3. 支持实时监控、人工审批、多轮对话等高级功能
+4. 可视化配置系统参数
 
 ## 输出文件
 
-- 研究报告：`outputs/` 目录下的 Markdown 文件
+- 研究报告：`outputs/` 目录下的 Markdown/HTML 文件
 - 向量数据：`vector_memory/` 目录下的数据库文件
+
+## 界面对比
+
+| 功能 | 命令行界面 | Web 界面 |
+|------|-----------|----------|
+| 基础研究 | ✅ | ✅ |
+| 多轮对话 | ✅ | ✅ |
+| 实时进度 | ❌ | ✅ |
+| 图形化配置 | ❌ | ✅ |
+| 人工审批界面 | ❌ | ✅ |
+| 报告可视化 | ❌ | ✅ |
+| 状态监控 | 基础 | 丰富 |

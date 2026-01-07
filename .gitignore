@@ -10,9 +10,12 @@ RAgents/langsmith/.env
 # IDE
 .idea/
 .vscode/
+.gradio/
 
 vector_memory/
 
 certificate.pem
+
+quality_docs/.env
 
 
